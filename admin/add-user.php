@@ -19,7 +19,7 @@ if(isset($_POST['save'])) {
             VALUES( '{$fname}', '{$lname}', '{$user}', '{$password}', '{$role}')";
 
             if(mysqli_query($conn, $sql1)) {
-                header("Location: http://localhost/news-template/admin/users.php");
+                header("Location: {$hostname}/admin/users.php");
             }
     }
 }
