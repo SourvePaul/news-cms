@@ -22,6 +22,7 @@ if(isset($_FILES['fileToUpload'])) {
         move_uploaded_file($file_tmp,"upload/".$file_name);
     } else {
         print_r($errors);
+        die();
     }
 }
 
@@ -31,5 +32,13 @@ $category = mysqli_real_escape_string($conn, $_POST['category']);
 $date = date("d M Y");
 $author = $_SESSION['user_id'];
 
+
+$sql = "INSERT INTO post(title, description, category, post_date, author, post_img)
+            VALUES('{$title}', '{$description}', {$category}, '{$date}', {$author}, '{$file_name}')";
+$sql .= "UPDATE category SET post = post + 1 WHERE category_id = {$category}";
+
+if(mysqli_multi_query($conn, $sql)) {
+    header("Location: {$hostname}/admin/post.php");
+}
 
 ?>
