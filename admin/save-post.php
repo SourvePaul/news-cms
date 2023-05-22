@@ -22,7 +22,7 @@ if (isset($_FILES['fileToUpload'])) {
   }
 
   if (empty($errors)) {
-    move_uploaded_file($file_tmp, "upload/" . $file_name);
+    move_uploaded_file($file_tmp,"upload/".$file_name);
   } else {
     print_r($errors);
     die();

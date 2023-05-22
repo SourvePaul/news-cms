@@ -35,7 +35,7 @@ if($_SESSION["user_role"] == '0'){
                 <?php
               }
           }
-        ?>
+                ?>
                 <?php
           if(isset($_POST['submit'])){
             $category =mysqli_real_escape_string($conn, $_POST['cat_name']);

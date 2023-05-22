@@ -4,8 +4,8 @@ if($_SESSION['user_role'] == '0') {
 }
 include "config.php";
 
-$userid = $_GET['id'];
-$sql = "DELETE FROM user WHERE user_id = {$userid}";
+$user_id = $_GET['id'];
+$sql = "DELETE FROM user WHERE user_id = {$user_id}";
 
     if(mysqli_query($conn, $sql)) {
         header("Location: {$hostname}/admin/users.php");

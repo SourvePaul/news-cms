@@ -44,7 +44,11 @@ if(isset($_SESSION["username"])) {
 
                         if(isset($_POST['login'])) {
 
-                            include "config.php";
+                        include "config.php";
+                        if(empty($_POST['username']) || empty($_POST['password'])){
+                                echo '<div class="alert alert-danger">All Fields must be entered.</div>';
+                                die();
+                        }else{
                             $username = mysqli_real_escape_string($conn, $_POST['username']);
                             $password = md5($_POST['password']); 
 
@@ -66,6 +70,7 @@ if(isset($_SESSION["username"])) {
                                 echo "<div class='alert alert-danger'>username and password are not matched!..</div>";
                             }
                         }
+                    }
 
                     ?>
                 </div>

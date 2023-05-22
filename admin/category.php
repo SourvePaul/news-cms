@@ -25,7 +25,7 @@ if($_SESSION['user_role'] == '0') {
                   };
                   $offset = ($page-1)* $limit;
               /* select query with offset and limit */
-              $sql = "SELECT * FROM  category ORDER BY category_id DESC Limit $offset,$limit";
+              $sql = "SELECT * FROM  category ORDER BY category_id DESC Limit {$offset},{$limit}";
               $result = mysqli_query($conn, $sql);
               if (mysqli_num_rows($result) > 0) {
                   $table = '<table class="content-table">';
@@ -37,16 +37,16 @@ if($_SESSION['user_role'] == '0') {
                                   <th>Delete</th>
                               </thead>
                               <tbody>';
-                    $serial = $offset + 1;
+                    $ID = $offset + 1;
                   while($row = mysqli_fetch_assoc($result)) {
                     $table .= "<tr>
-                            <td class='id'>{$serial}</td>
+                            <td class='id'>{$ID}</td>
                             <td>{$row["category_name"]}</td>
                             <td>{$row["post"]}</td>
                             <td class='edit'><a href='update-category.php?id={$row['category_id']}' ><i class='fa fa-edit'></i></a></td>
                             <td class='delete'><a href='delete-category.php?id={$row['category_id']}'><i class='fa fa-trash-o'></i></a></td>
                         </tr>";
-                        $serial++;
+                        $ID++;
                   }
                   $table .= '</tbody></table>';
                   // show table

@@ -24,6 +24,7 @@ if($_SESSION['user_role'] == '0') {
                 }
                 $offset = ($page - 1) * $limit;
 
+                /* select query of user table with offset and limit */
                 $sql = "SELECT * FROM user ORDER BY user_id DESC LIMIT {$offset}, {$limit}";
                 $result = mysqli_query($conn, $sql) or die("Query failed from users.");
                 
@@ -39,11 +40,14 @@ if($_SESSION['user_role'] == '0') {
                         <th>Delete</th>
                     </thead>
                     <tbody>
+
                         <?php 
+                            $ID= 0;
+                            $ID = $offset + 1;
                             while($row = mysqli_fetch_assoc($result)) { 
                         ?>
                         <tr>
-                            <td class='id'> <?php echo $row['user_id']; ?> </td>
+                            <td class='id'> <?php echo $ID; ?> </td>
                             <td> <?php echo $row['first_name'] . " " .$row['last_name']; ?> </td>
                             <td> <?php echo $row['username']; ?> </td>
                             <td> <?php 
@@ -58,12 +62,20 @@ if($_SESSION['user_role'] == '0') {
                             <td class='delete'><a href='delete-user.php?id=<?php echo $row["user_id"]; ?>'><i
                                         class='fa fa-trash-o'></i></a></td>
                         </tr>
-                        <?php } ?>
+
+                        <?php
+                            $ID++;
+                            }
+                        ?>
+
                     </tbody>
                 </table>
                 <?php 
+                }else {
+                    echo "<h3>No records found!...</h3>";
                 }
 
+                // show pagination
                 $sql1 = "SELECT * From user";
                 $result1 = mysqli_query($conn, $sql1) or die("Query failed from users down..");
                 if(mysqli_num_rows($result1) > 0) {
@@ -76,7 +88,7 @@ if($_SESSION['user_role'] == '0') {
                         echo "<li><a href='users.php?page=".($page - 1)."'>Prev</a></li>";
                     }
                     for($i=1; $i <= $total_pages; $i++) {
-                        if($i) {
+                        if($i  == $page) {
                             $active = "active";
                         }else {
                             $active = "";
@@ -89,7 +101,7 @@ if($_SESSION['user_role'] == '0') {
                     echo "</ul>";
                 }
                 ?>
-                <!-- <li class="active"><a>1</a></li> -->
+
             </div>
         </div>
     </div>

@@ -22,7 +22,9 @@ if(isset($_POST['save'])) {
 
             if(mysqli_query($conn, $sql1)) {
                 header("Location: {$hostname}/admin/users.php");
-            }
+            }else{
+                echo "<p style='color:red;text-align:center;margin: 10px 0;'>Can't Insert User.</p>";
+              }
     }
 }
 ?>
