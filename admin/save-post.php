@@ -1,7 +1,28 @@
 <?php
 include "config.php";
 if(isset($_FILES['fileToUpload'])) {
+    $error = array();
+
+    $file_name = $_FILES['fileToUpload']['name'];
+    $file_size = $_FILES['fileToUpload']['size'];
+    $file_tmp = $_FILES['fileToUpload']['tmp_name'];
+    $file_type = $_FILES['fileToUpload']['type'];
+    $file_ext = strtolower(end(explode('.',$file_name)));
+    $extensions = array("jpeg", "jpg", "png");
     
+    if(in_array($file_ext,$extensions) === false) {
+        $errors[] = "Please, choose jpeg, jpg or png files!..";
+    }
+
+    if($file_size > 5242880) {
+        $errors[] = "File size must be 5mb or lower!..";
+    }
+
+    if(empty($errors) == true) {
+        move_uploaded_file($file_tmp,"upload/".$file_name);
+    } else {
+        print_r($errors);
+    }
 }
 
 $title = mysqli_real_escape_string($conn, $_POST['post_title']);
