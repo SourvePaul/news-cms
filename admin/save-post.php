@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "config.php";
 
 if (isset($_FILES['fileToUpload'])) {
@@ -29,11 +30,11 @@ if (isset($_FILES['fileToUpload'])) {
   }
 }
 
-session_start();
+
 $title = mysqli_real_escape_string($conn, $_POST['post_title']);
 $description = mysqli_real_escape_string($conn, $_POST['postdesc']);
 $category = mysqli_real_escape_string($conn, $_POST['category']);
-$date = date("d M, Y");
+$date = date('d M, Y');
 $author = $_SESSION['user_id'];
 
 $sql = "INSERT INTO post (title, description, category, post_date, author, post_img)
