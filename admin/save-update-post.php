@@ -2,15 +2,15 @@
 
 include "config.php";
 
-if(empty($_FILES['new_image']['name'])) {
-    $file_name = $_POST['old_image'];
+if(empty($_FILES['new-image']['name'])) {
+    $file_name = $_POST['old-image'];
 } else {
     $errors = array();
 
-  $file_name = $_FILES['fileToUpload']['name'];
-  $file_size = $_FILES['fileToUpload']['size'];
-  $file_tmp = $_FILES['fileToUpload']['tmp_name'];
-  $file_type = $_FILES['fileToUpload']['type'];
+  $file_name = $_FILES['new-image']['name'];
+  $file_size = $_FILES['new-image']['size'];
+  $file_tmp = $_FILES['new-image']['tmp_name'];
+  $file_type = $_FILES['new-image']['type'];
   $file_ext = explode('.', $file_name);
   $file_ext = end($file_ext);
 
@@ -31,5 +31,13 @@ if(empty($_FILES['new_image']['name'])) {
     die();
   }
 }
+
+    $sql2 = "UPDATE post SET title = '{$_POST['post_title']}', description = '{$_POST['postdesc']}', category = {$_POST['category']},
+            post_img = '{$file_name}' WHERE post_id = {$_POST['post_id']}";
+    $result2 = mysqli_query($conn, $sql2) or die("query failed from save-update-post!..");
+    
+    if($result2) {
+        header("Location: {$hostname}/admin/users.php");
+    }
 
 ?>
