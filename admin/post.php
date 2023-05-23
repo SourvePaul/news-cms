@@ -20,10 +20,25 @@
                 }
                 $offset = ($page - 1) * $limit;
 
-                $sql = "SELECT * FROM post
-                LEFT JOIN category ON post.category = category.category_id
-                LEFT JOIN user ON post.author = user.user_id
-                ORDER BY post.post_id DESC LIMIT {$offset}, {$limit}";
+                if($_SESSION['user_role'] == '1') {
+                    
+                    $sql = "SELECT post.post_id, post.title, post.description, post.post_date,
+                    category.category_name, user.username FROM post
+                    LEFT JOIN category ON post.category = category.category_id
+                    LEFT JOIN user ON post.author = user.user_id
+                    ORDER BY post.post_id DESC LIMIT {$offset}, {$limit}";
+
+                } elseif($_SESSION['user_role'] == '0') {
+
+                    $sql = "SELECT post.post_id, post.title, post.description, post.post_date,
+                    category.category_name, user.username FROM post
+                    LEFT JOIN category ON post.category = category.category_id
+                    LEFT JOIN user ON post.author = user.user_id
+                    WHERE post.author = {$_SESSION['user_id']}
+                    ORDER BY post.post_id DESC LIMIT {$offset}, {$limit}";
+                }
+
+                
                 $result = mysqli_query($conn, $sql) or die("Query failed from users.");
                 
                 if(mysqli_num_rows($result) > 0) {
@@ -67,32 +82,38 @@
                     }else {
                         echo "<h3>No records found!...</h3>";
                     }
-                    
-                    $sql1 = "SELECT * From post";
-                $result1 = mysqli_query($conn, $sql1) or die("Query failed from post down..");
-                if(mysqli_num_rows($result1) > 0) {
-                    $total_records = mysqli_num_rows($result1);
-                   
-                    $total_pages = ceil($total_records/$limit);
 
-                    echo "<ul class='pagination admin-pagination'>";
-                    if($page > 1) {
-                        echo "<li><a href='post.php?page=".($page - 1)."'>Prev</a></li>";
+                    if($_SESSION['user_role'] == '1') {
+                        $sql1 = "SELECT * From post";
+                    } elseif($_SESSION['user_role'] == '0') {
+                        $sql1 = "SELECT * From post WHERE post.author = {$_SESSION['user_id']}";
                     }
-                    for($i=1; $i <= $total_pages; $i++) {
-                        if($i) {
-                            $active = "active";
-                        }else {
-                            $active = "";
+                    
+                    //$sql1 = "SELECT * From post";
+                    $result1 = mysqli_query($conn, $sql1) or die("Query failed from post down..");
+                    if(mysqli_num_rows($result1) > 0) {
+                        $total_records = mysqli_num_rows($result1);
+                   
+                        $total_pages = ceil($total_records/$limit);
+
+                        echo "<ul class='pagination admin-pagination'>";
+                        if($page > 1) {
+                            echo "<li><a href='post.php?page=".($page - 1)."'>Prev</a></li>";
                         }
-                       echo "<li class='".$active."'><a href='post.php?page=".$i."'>".$i."</a></li>";
+                        for($i=1; $i <= $total_pages; $i++) {
+                            if($i) {
+                                $active = "active";
+                            }else {
+                                $active = "";
+                            }
+                        echo "<li class='".$active."'><a href='post.php?page=".$i."'>".$i."</a></li>";
+                        }
+                        if($total_pages > $page) {
+                            echo "<li><a href='post.php?page=".($page + 1)."'>Next</a></li>";
+                        }
+                        echo "</ul>";
                     }
-                    if($total_pages > $page) {
-                        echo "<li><a href='post.php?page=".($page + 1)."'>Next</a></li>";
-                    }
-                    echo "</ul>";
-                }
-                    ?>
+                ?>
 
             </div>
         </div>
