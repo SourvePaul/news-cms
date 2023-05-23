@@ -68,7 +68,7 @@
                         <label for="">Post image</label>
                         <input type="file" name="new-image">
                         <img src="upload/<?php echo $row['post_img']; ?>" height="150px">
-                        <!-- <input type="hidden" name="old-image" value=""> -->
+                        <input type="hidden" name="old-image" value="<?php echo $row['post_img']; ?>">
                     </div>
                     <input type="submit" name="submit" class="btn btn-primary" value="Update" />
                 </form>
