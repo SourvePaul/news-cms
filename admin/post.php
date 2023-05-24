@@ -84,6 +84,7 @@
                         echo "<h3>No records found!...</h3>";
                     }
 
+                    //show pagination
                     if($_SESSION['user_role'] == '1') {
                         $sql1 = "SELECT * From post";
                     } elseif($_SESSION['user_role'] == '0') {
