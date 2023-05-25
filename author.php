@@ -60,7 +60,7 @@
                                     <div class="post-information">
                                         <span>
                                             <i class="fa fa-tags" aria-hidden="true"></i>
-                                            <a href='category.php?aid=<?php echo $row['category']; ?>'>
+                                            <a href='category.php?cid=<?php echo $row['category']; ?>'>
                                                 <?php echo $row['category_name']; ?>
                                             </a>
                                         </span>
