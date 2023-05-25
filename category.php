@@ -14,7 +14,7 @@
                         $cat_id = $_GET['cid'];
                         
                         $sql1 = "SELECT * From category WHERE category_id = {$cat_id}";
-                        $result1 = mysqli_query($conn, $sql1) or die("Query failed from index down..");
+                        $result1 = mysqli_query($conn, $sql1) or die("Query failed from category up..");
                         $row1 = mysqli_fetch_assoc($result1);
                     ?>
 

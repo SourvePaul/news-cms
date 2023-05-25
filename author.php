@@ -13,12 +13,14 @@
                     if(isset($_GET['aid'])){
                         $auth_id = $_GET['aid'];
 
-                        $sql1 = "SELECT * From category WHERE category_id = {$auth_id}";
-                        $result1 = mysqli_query($conn, $sql1) or die("Query failed from index down..");
+                        $sql1 = "SELECT * From post JOIN user
+                                On post.author = user.user_id 
+                                WHERE post.author = {$auth_id}";
+                        $result1 = mysqli_query($conn, $sql1) or die("Query failed from author up..");
                         $row1 = mysqli_fetch_assoc($result1);
                     ?>
 
-                    <h2 class="page-heading"><?php echo $row1['category_name'].' :'; ?></h2>
+                    <h2 class="page-heading"><?php echo $row1['first_name'] .' '. $row1['last_name']. ' :'; ?></h2>
 
                     <?php 
 
@@ -34,7 +36,7 @@
                                 category.category_name, user.username, post.category, post.post_img FROM post
                                 LEFT JOIN category ON post.category = category.category_id
                                 LEFT JOIN user ON post.author = user.user_id
-                                WHERE post.category = {$auth_id}
+                                WHERE post.author = {$auth_id}
                                 ORDER BY post.post_id DESC LIMIT {$offset},{$limit}";
                                 
                         $result = mysqli_query($conn, $sql) or die("Query failed from users.");
@@ -93,13 +95,13 @@
                         //show pagination
 
                         if(mysqli_num_rows($result1) > 0) {
-                            $total_records = $row1['post'];
+                            $total_records = mysqli_num_rows($result1);
                     
                             $total_pages = ceil($total_records/$limit);
 
                             echo "<ul class='pagination admin-pagination'>";
                             if($page > 1) {
-                                echo "<li><a href='category.php?aid=".$auth_id ."&page=".($page - 1)."'>Prev</a></li>";
+                                echo "<li><a href='author.php?aid=".$auth_id ."&page=".($page - 1)."'>Prev</a></li>";
                             }
                             for($i=1; $i <= $total_pages; $i++) {
                                 if($i) {
@@ -107,10 +109,10 @@
                                 }else {
                                     $active = "";
                                 }
-                            echo "<li class='".$active."'><a href='category.php?aid=".$auth_id ."&page=".$i."'>".$i."</a></li>";
+                            echo "<li class='".$active."'><a href='author.php?aid=".$auth_id ."&page=".$i."'>".$i."</a></li>";
                             }
                             if($total_pages > $page) {
-                                echo "<li><a href='category.php?aid=".$auth_id ."&page=".($page + 1)."'>Next</a></li>";
+                                echo "<li><a href='author.php?aid=".$auth_id ."&page=".($page + 1)."'>Next</a></li>";
                             }
                             echo "</ul>";
                         }
