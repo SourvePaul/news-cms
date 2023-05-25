@@ -5,7 +5,14 @@
             <div class="col-md-8">
                 <!-- post-container -->
                 <div class="post-container">
-                    <h2 class="page-heading">Category Name</h2>
+
+                    <?php 
+                        $sql1 = "SELECT * From category WHERE category_id = {$cat_id}";
+                        $result1 = mysqli_query($conn, $sql1) or die("Query failed from index down..");
+                        $row1 = mysqli_fetch_assoc($result1);
+                    ?>
+
+                    <h2 class="page-heading"><?php echo $row1['category_name'].' :'; ?></h2>
                     <?php 
 
                         include "config.php";
@@ -83,13 +90,9 @@
                         }
                 
                         //show pagination
-                        $sql1 = "SELECT post From category WHERE category_id = {$cat_id}";
-                        $result1 = mysqli_query($conn, $sql1) or die("Query failed from index down..");
-                        $row = mysqli_fetch_assoc($result1);
-
 
                         if(mysqli_num_rows($result1) > 0) {
-                            $total_records = $row['post'];
+                            $total_records = $row1['post'];
                     
                             $total_pages = ceil($total_records/$limit);
 
