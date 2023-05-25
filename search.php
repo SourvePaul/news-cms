@@ -5,22 +5,16 @@
             <div class="col-md-8">
                 <!-- post-container -->
                 <div class="post-container">
-                    <h2 class="page-heading">Search : Search Term</h2>
                     <?php 
 
                     include "config.php";
                         
-                    if(isset($_GET['aid'])){
-                        $auth_id = $_GET['aid'];
+                    if(isset($_GET['search'])){
+                        $search_term = mysqli_real_escape_string($conn, $_GET['search']);
 
-                        $sql1 = "SELECT * From post JOIN user
-                                On post.author = user.user_id 
-                                WHERE post.author = {$auth_id}";
-                        $result1 = mysqli_query($conn, $sql1) or die("Query failed from author up..");
-                        $row1 = mysqli_fetch_assoc($result1);
                     ?>
 
-                    <h2 class="page-heading"><?php echo $row1['first_name'] .' '. $row1['last_name']. ' :'; ?></h2>
+                    <h2 class="page-heading">Search : <?php echo $search_term; ?></h2>
 
                     <?php 
 
@@ -36,7 +30,7 @@
                                 category.category_name, user.username, post.category, post.post_img FROM post
                                 LEFT JOIN category ON post.category = category.category_id
                                 LEFT JOIN user ON post.author = user.user_id
-                                WHERE post.author = {$auth_id}
+                                WHERE post.title LIKE '%{$search_term}%' OR post.description LIKE '%{$search_term}%'
                                 ORDER BY post.post_id DESC LIMIT {$offset},{$limit}";
                                 
                         $result = mysqli_query($conn, $sql) or die("Query failed from users.");
@@ -60,7 +54,7 @@
                                     <div class="post-information">
                                         <span>
                                             <i class="fa fa-tags" aria-hidden="true"></i>
-                                            <a href='category.php?aid=<?php echo $row['category']; ?>'>
+                                            <a href='category.php?cid=<?php echo $row['category']; ?>'>
                                                 <?php echo $row['category_name']; ?>
                                             </a>
                                         </span>
@@ -93,7 +87,10 @@
                         }
                 
                         //show pagination
-
+                        $sql1 = "SELECT * From post 
+                                WHERE post.title LIKE '%{$search_term}%'";
+                        $result1 = mysqli_query($conn, $sql1) or die("Query failed from author up..");
+                        
                         if(mysqli_num_rows($result1) > 0) {
                             $total_records = mysqli_num_rows($result1);
                     
@@ -101,7 +98,7 @@
 
                             echo "<ul class='pagination admin-pagination'>";
                             if($page > 1) {
-                                echo "<li><a href='author.php?aid=".$auth_id ."&page=".($page - 1)."'>Prev</a></li>";
+                                echo "<li><a href='search.php?search=".$search_term ."&page=".($page - 1)."'>Prev</a></li>";
                             }
                             for($i=1; $i <= $total_pages; $i++) {
                                 if($i) {
@@ -109,10 +106,10 @@
                                 }else {
                                     $active = "";
                                 }
-                            echo "<li class='".$active."'><a href='author.php?aid=".$auth_id ."&page=".$i."'>".$i."</a></li>";
+                            echo "<li class='".$active."'><a href='search.php?search=".$search_term ."&page=".$i."'>".$i."</a></li>";
                             }
                             if($total_pages > $page) {
-                                echo "<li><a href='author.php?aid=".$auth_id ."&page=".($page + 1)."'>Next</a></li>";
+                                echo "<li><a href='search.php?search=".$search_term ."&page=".($page + 1)."'>Next</a></li>";
                             }
                             echo "</ul>";
                         }
