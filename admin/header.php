@@ -69,7 +69,9 @@ if(!isset($_SESSION["username"])) {
                         <?php
                         } 
                         ?>
-
+                        <li>
+                            <a href="setting.php">logo_Setting</a>
+                        </li>
                     </ul>
                 </div>
             </div>
