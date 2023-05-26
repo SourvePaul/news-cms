@@ -37,7 +37,7 @@ if(empty($_FILES['new-image']['name'])) {
 
     if($_POST['old_category'] != $_POST['category']) {
       $sql2 .= "UPDATE category SET post = post-1 WHERE category_id = {$_POST['old_category']};";
-      $sql2 .= "UPDATE category SET post = post-1 WHERE category_id = {$_POST['category']};";
+      $sql2 .= "UPDATE category SET post = post+1 WHERE category_id = {$_POST['category']};";
     }
    
     $result2 = mysqli_multi_query($conn, $sql2) or die("query failed from save-update-post!..");
