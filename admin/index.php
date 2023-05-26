@@ -24,7 +24,23 @@ if(isset($_SESSION["username"])) {
         <div class="container">
             <div class="row">
                 <div class="col-md-offset-4 col-md-4">
-                    <img class="logo" src="images/news.jpg">
+                    <?php 
+                    
+                    include "config.php";
+
+                    $sql = "SELECT * FROM settings";
+                    $result = mysqli_query($conn, $sql) or die("Query from setting!..");
+
+                    if(mysqli_num_rows($result) > 0) { 
+                        while($row = mysqli_fetch_assoc($result)) { 
+                            if($row['logo'] == "") {
+                                echo '<a href="index.php"><h1>'.$row['websitename'].'</h1></a>';
+                            }else {
+                                echo '<a href="index.php" id="logo"><img src="images/'.$row['logo'].'"></a>';
+                            }
+                        }
+                    }
+                    ?>
                     <h3 class="heading">Admin</h3>
                     <!-- Form Start -->
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">

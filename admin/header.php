@@ -32,7 +32,23 @@ if(!isset($_SESSION["username"])) {
             <div class="row">
                 <!-- LOGO -->
                 <div class="col-md-2">
-                    <a href="post.php"><img class="logo" src="images/news.jpg"></a>
+                    <?php 
+                    
+                    include "config.php";
+
+                    $sql = "SELECT * FROM settings";
+                    $result = mysqli_query($conn, $sql) or die("Query from setting!..");
+
+                    if(mysqli_num_rows($result) > 0) { 
+                        while($row = mysqli_fetch_assoc($result)) { 
+                            if($row['logo'] == "") {
+                                echo '<a href="index.php"><h1>'.$row['websitename'].'</h1></a>';
+                            }else {
+                                echo '<a href="index.php" id="logo"><img src="images/'.$row['logo'].'"></a>';
+                            }
+                        }
+                    }
+                    ?>
                 </div>
                 <!-- /LOGO -->
                 <!-- LOGO-Out -->
@@ -66,12 +82,13 @@ if(!isset($_SESSION["username"])) {
                         <li>
                             <a href="users.php">Users</a>
                         </li>
-                        <?php
-                        } 
-                        ?>
                         <li>
                             <a href="setting.php">Setting</a>
                         </li>
+                        <?php
+                        } 
+                        ?>
+
                     </ul>
                 </div>
             </div>

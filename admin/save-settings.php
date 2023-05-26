@@ -32,7 +32,7 @@ if(empty($_FILES['logo']['name'])) {
   }
 }
 
-    $sql2 = "UPDATE settings SET websitename = '{$_POST['website_name']}', logo = '{$file_name}', footerdesc = {$_POST['footer_desc']}";
+    $sql2 = "UPDATE settings SET websitename = '{$_POST['website_name']}', logo = '{$file_name}', footerdesc = '{$_POST['footer_desc']}'";
     $result2 = mysqli_query($conn, $sql2) or die("query failed from save-setting!..");
     
     if($result2) {
