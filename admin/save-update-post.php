@@ -33,8 +33,14 @@ if(empty($_FILES['new-image']['name'])) {
 }
 
     $sql2 = "UPDATE post SET title = '{$_POST['post_title']}', description = '{$_POST['postdesc']}', category = {$_POST['category']},
-            post_img = '{$file_name}' WHERE post_id = {$_POST['post_id']}";
-    $result2 = mysqli_query($conn, $sql2) or die("query failed from save-update-post!..");
+            post_img = '{$file_name}' WHERE post_id = {$_POST['post_id']};";
+
+    if($_POST['old_category'] != $_POST['category']) {
+      $sql2 .= "UPDATE category SET post = post-1 WHERE category_id = {$_POST['old_category']};";
+      $sql2 .= "UPDATE category SET post = post-1 WHERE category_id = {$_POST['category']};";
+    }
+   
+    $result2 = mysqli_multi_query($conn, $sql2) or die("query failed from save-update-post!..");
     
     if($result2) {
         header("Location: {$hostname}/admin/users.php");
